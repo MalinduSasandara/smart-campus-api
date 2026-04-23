@@ -17,7 +17,7 @@ public class DiscoveryResource {
         Map<String, Object> metadata = new HashMap<>();
         metadata.put("version", "v1");
         metadata.put("title", "Smart Campus Sensor & Room Management API");
-        metadata.put("contact", "your.email@westminster.ac.uk");
+        metadata.put("contact", "w2121320@westminster.ac.uk");
         metadata.put("resources", Map.of(
             "rooms", "/api/v1/rooms",
             "sensors", "/api/v1/sensors"
