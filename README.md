@@ -111,13 +111,13 @@ curl -X DELETE http://localhost:8080/api/v1/rooms/ENG-201
 
 2.	Question: Why is the provision of “Hypermedia” (links and navigation within responses) considering a hallmark of advanced RESTful design (HATEOAS)? How does this approach benefit client developers compared to static documentation?
 
-•	Hypermedia as the Engine of Application State (HATEOAS) is a usage of making navigational links within API responses, such that a client can dynamically find what actions it can perform without reference to documentation.\
+•	Hypermedia as the Engine of Application State (HATEOAS) is a usage of making navigational links within API responses, such that a client can dynamically find what actions it can perform without reference to documentation. (Fowler, 2010)\
 •	Why it is thought to be advanced REST: The original dissertation by Roy Fielding has HATEOAS as the highest level of the REST maturity model (Level 3 in the Richardson model). It breaks the relationship between clients and server URLs completely - clients take links and do not build hardcoded paths.\
-•	In static documentation, when the server alters a URL (e.g. /rooms to /campus-rooms), all clients will crash. Using HATEOAS, the clients are only aware of the discovery endpoint (GET /api/v1), and any additional paths are provided dynamically in responses. This allows the API to be self-describing, simpler to version and much less fragile to client developers.
+•	In static documentation, when the server alters a URL (e.g. /rooms to /campus-rooms), all clients will crash. Using HATEOAS, the clients are only aware of the discovery endpoint (GET /api/v1), and any additional paths are provided dynamically in responses. This allows the API to be self-describing, simpler to version and much less fragile to client developers. (Gupta, 2018) 
 
 3.	Question: When returning a list of rooms, what are the implications of returning only IDs versus returning the full room objects? Consider network bandwidth and client-side processing
 
-•	Returning IDs only saves network bandwidth at the cost of the client making N+1 requests (requesting the list and requesting each object detail separately) to amplify latency and load on the server. Sending full objects is more effective in the first processing of a client but it has bigger payloads. This implementation gives back full objects to favor a "chunky" over a "chatty" interface.
+•	Returning IDs only saves network bandwidth at the cost of the client making N+1 requests (requesting the list and requesting each object detail separately) to amplify latency and load on the server. Sending full objects is more effective in the first processing of a client but it has bigger payloads. This implementation gives back full objects to favor a "chunky" over a "chatty" interface.(claytonsiemens77, 2025)   
 
 4.	Question: Is the DELETE operation idempotent in your implementation? Provide a detailed justification by describing what happens if a client mistakenly sends the exact same DELETE request for a room multiple time.
 
@@ -129,7 +129,7 @@ curl -X DELETE http://localhost:8080/api/v1/rooms/ENG-201
 
 6.	Question: You implemented this filtering using @QueryParam. Contrast this with an alternative design where the type is part of the URL path (e.g., /api/vl/sensors/type/CO2). Why is the query parameter approach generally considered superior for filtering and searching collections?
 
-•	Query parameters are semantically designed to be used to filter and search for a collection like (?type=CO2), whereas path segments are designed to identify a specific resource. Optional composable filters such as query parameters such as (?type=CO2 status=ACTIVE) can be used, without generating a giant, confusing hierarchy of URLs.
+•	Query parameters are semantically designed to be used to filter and search for a collection like (?type=CO2), whereas path segments are designed to identify a specific resource. Optional composable filters such as query parameters such as (?type=CO2 status=ACTIVE) can be used, without generating a giant, confusing hierarchy of URLs.(Au-Yeung, 2020)
 
 7.	Question: Discuss the architectural benefits of the Sub-Resource Locator pattern. How does delegating logic to separate classes help manage complexity in large APIs compared to defining every nested path (e.g., sensors/{id}/readings/{rid}) in one massive con troller class?
 
@@ -147,5 +147,9 @@ curl -X DELETE http://localhost:8080/api/v1/rooms/ENG-201
 
 •	By implementing a bespoke LoggingFilter, which uses both ContainerRequestFilter and ContainerResponseFilter, the application can deal with cross cutting concerns in a central location. This can only be much more beneficial than adding manual Logger statements on a case-by-case basis to each individual resource method, since it follows the DRY (Don't Repeat Yourself) principle completely. Centralized filtering provides full observability; all requests and responses are recorded with similar metadata (Method, URI, and Status Code), even when the call is made to a different resource. This leads to a more maintainable and cleaner codebase that only implements business logic and offers strong diagnostic telemetry to the whole system.
 
-
+REFERENCES \
+Fowler, M. (2010). Richardson Maturity Model. [online] martinfowler.com. Available at: https://martinfowler.com/articles/richardsonMaturityModel.html. \
+Gupta, L. (2018). How to Build HATEOAS Driven REST APIs. [online] REST API Tutorial. Available at: https://restfulapi.net/hateoas/. \
+claytonsiemens77 (2025). Web API Design Best Practices - Azure Architecture Center. [online] Microsoft.com. Available at: http://learn.microsoft.com/enus/azure/architecture/best-practices/api-design [Accessed 24 Apr. 2026]. \
+Au-Yeung, J. (2020). Best practices for REST API design. [online] Stack Overflow Blog. Available at: https://stackoverflow.blog/2020/03/02/best-practices-for-rest-api-design/.
 
